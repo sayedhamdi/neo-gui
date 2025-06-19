@@ -1,0 +1,16 @@
+# NeoMind Complete Requirements
+requests>=2.28.0
+pillow>=9.0.0
+numpy>=1.21.0
+python-dotenv>=1.0.0
+
+# Audio processing
+pyaudio>=0.2.11
+webrtcvad>=2.0.10
+
+# AI models
+openai-whisper>=20231117
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+pyttsx3>=2.90
