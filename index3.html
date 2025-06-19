@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Neo AI Face</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .neo-face-container {
+            position: relative;
+            width: 480px;
+            height: 320px;
+            background: linear-gradient(145deg, #f0f8ff, #e6f3ff);
+            border-radius: 40px;
+            box-shadow: 
+                inset 0 20px 40px rgba(255, 255, 255, 0.5),
+                inset 0 -20px 40px rgba(0, 0, 0, 0.1),
+                0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 8px solid rgba(255, 255, 255, 0.8);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+
+        .face {
+            position: relative;
+            width: 400px;
+            height: 280px;
+        }
+
+        .eyes {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 100px;
+        }
+
+        .eye {
+            width: 60px;
+            height: 60px;
+            background: #333;
+            border-radius: 50%;
+            position: relative;
+            animation: blink 4s infinite;
+            box-shadow: 
+                inset 0 5px 10px rgba(0, 0, 0, 0.3),
+                0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .eye::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            animation: eyeShine 3s ease-in-out infinite;
+        }
+
+        .eye::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+        }
+
+        @keyframes blink {
+            0%, 45%, 55%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.1); }
+        }
+
+        @keyframes eyeShine {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .eyes.listening .eye {
+            animation: listenBlink 2s infinite;
+            background: #2ecc71;
+        }
+
+        .eyes.recording .eye {
+            animation: recordingBlink 1s infinite;
+            background: #f39c12;
+        }
+
+        @keyframes listenBlink {
+            0%, 40%, 60%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.8); }
+        }
+
+        @keyframes recordingBlink {
+            0%, 100% { transform: scaleY(1); background: #f39c12; }
+            50% { transform: scaleY(0.9); background: #e67e22; }
+        }
+
+        .mouth {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 60px;
+            border: 8px solid #ff6b6b;
+            border-top: none;
+            border-radius: 0 0 120px 120px;
+            background: #ffb3ba;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 -10px 20px rgba(255, 107, 107, 0.3),
+                0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .mouth.talking {
+            animation: talk 0.2s ease-in-out infinite alternate;
+            background: #ff8a95;
+            border-color: #ff4757;
+        }
+
+        .mouth.listening {
+            border-radius: 60px;
+            border-color: #2ecc71;
+            background: #a8e6cf;
+            width: 100px;
+            height: 50px;
+            animation: listenPulse 2s ease-in-out infinite;
+        }
+
+        .mouth.recording {
+            border-radius: 80px;
+            border-color: #f39c12;
+            background: #f9ca24;
+            width: 110px;
+            height: 55px;
+            animation: recordingPulse 1s ease-in-out infinite;
+        }
+
+        .mouth.happy {
+            border-radius: 0 0 120px 120px;
+            border-color: #4ecdc4;
+            background: #a8e6cf;
+            animation: smile 3s ease-in-out infinite;
+        }
+
+        @keyframes talk {
+            0% { 
+                height: 40px; 
+                border-radius: 0 0 80px 80px;
+                transform: translateX(-50%) scaleX(0.9);
+            }
+            100% { 
+                height: 80px; 
+                border-radius: 0 0 140px 140px;
+                transform: translateX(-50%) scaleX(1.1);
+            }
+        }
+
+        @keyframes listenPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+            50% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+        }
+
+        @keyframes recordingPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.15); }
+        }
+
+        @keyframes smile {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+        }
+
+        .status-dot {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2ecc71;
+            animation: statusPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
+        }
+
+        .status-dot.listening {
+            background: #2ecc71;
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
+        }
+
+        .status-dot.recording {
+            background: #f39c12;
+            box-shadow: 0 0 20px rgba(243, 156, 18, 0.5);
+        }
+
+        .status-dot.speaking {
+            background: #e74c3c;
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
+        }
+
+        .status-dot.processing {
+            background: #9b59b6;
+            box-shadow: 0 0 20px rgba(155, 89, 182, 0.5);
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .wake-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .wake-indicator.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="neo-face-container">
+        <div class="status-dot" id="statusDot"></div>
+        <div class="face">
+            <div class="eyes" id="neoEyes">
+                <div class="eye"></div>
+                <div class="eye"></div>
+            </div>
+            <div class="mouth happy" id="neoMouth"></div>
+        </div>
+        <div class="wake-indicator" id="wakeIndicator">Getting ready...</div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://6423-197-25-169-35.ngrok-free.app';
+        
+        let globalStream = null;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let isRecording = false;
+        let isProcessing = false;
+        
+        // Audio analysis for natural speech detection
+        let audioContext = null;
+        let analyser = null;
+        let microphone = null;
+        let dataArray = null;
+        let silenceStart = 0;
+        let lastSpeechTime = 0;
+        let speechThreshold = 40;
+        let silenceThreshold = 2000; // 2 seconds
+        let isMonitoring = false;
+
+        // Initialize everything once
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                showStatus('Getting microphone access...');
+                
+                // Get microphone permission ONCE
+                globalStream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true,
+                        sampleRate: 44100
+                    }
+                });
+
+                // Initialize audio analysis
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(globalStream);
+                
+                analyser.fftSize = 512;
+                analyser.smoothingTimeConstant = 0.3;
+                microphone.connect(analyser);
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+                // Start natural conversation mode
+                startNaturalListening();
+                
+                console.log('🤖 Neo is ready for natural conversation!');
+                
+            } catch (error) {
+                console.error('Setup failed:', error);
+                showStatus('Please allow microphone access and refresh');
+            }
+        });
+
+        function startNaturalListening() {
+            setEmotion('listening');
+            setStatus('listening');
+            showStatus('I\'m listening... just start talking!');
+            
+            isMonitoring = true;
+            lastSpeechTime = Date.now();
+            monitorSpeech();
+        }
+
+        // Continuously monitor for speech - completely natural
+        function monitorSpeech() {
+            if (!isMonitoring || isProcessing) return;
+
+            analyser.getByteFrequencyData(dataArray);
+            
+            // Calculate average audio level
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                sum += dataArray[i];
+            }
+            const audioLevel = sum / dataArray.length;
+            
+            const currentTime = Date.now();
+            
+            // Detect speech start
+            if (audioLevel > speechThreshold && !isRecording) {
+                console.log('🎤 Speech detected, starting recording...');
+                startRecording();
+            }
+            
+            // During recording, track speech activity
+            if (isRecording) {
+                if (audioLevel > speechThreshold) {
+                    lastSpeechTime = currentTime;
+                    silenceStart = 0;
+                } else {
+                    if (silenceStart === 0) {
+                        silenceStart = currentTime;
+                    }
+                    
+                    // Check if we've been silent long enough
+                    if (currentTime - silenceStart > silenceThreshold) {
+                        console.log('🔇 Silence detected, processing speech...');
+                        stopRecording();
+                    }
+                }
+            }
+            
+            // Continue monitoring
+            requestAnimationFrame(monitorSpeech);
+        }
+
+        function startRecording() {
+            if (isRecording || isProcessing) return;
+            
+            try {
+                mediaRecorder = new MediaRecorder(globalStream);
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = event => {
+                    if (event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+                
+                mediaRecorder.onstop = async () => {
+                    if (audioChunks.length > 0) {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        await processVoiceMessage(audioBlob);
+                    }
+                };
+                
+                mediaRecorder.start();
+                isRecording = true;
+                lastSpeechTime = Date.now();
+                silenceStart = 0;
+                
+                setEmotion('recording');
+                setStatus('recording');
+                showStatus('Got it! Keep talking...');
+                
+            } catch (error) {
+                console.error('Recording failed:', error);
+                resetToListening();
+            }
+        }
+
+        function stopRecording() {
+            if (!isRecording) return;
+            
+            isRecording = false;
+            
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+            
+            setEmotion('thinking');
+            setStatus('processing');
+            showStatus('Processing what you said...');
+        }
+
+        async function processVoiceMessage(audioBlob) {
+            if (isProcessing) return;
+            
+            isProcessing = true;
+            
+            try {
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'voice.wav');
+                formData.append('child_name', 'friend');
+
+                const response = await fetch(`${API_BASE}/chat/voice`, {
+                    method: 'POST',
+                    headers: {
+                        'ngrok-skip-browser-warning': 'true'
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const audioResponse = await response.blob();
+                    const audioUrl = URL.createObjectURL(audioResponse);
+                    await playResponse(audioUrl);
+                } else {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('Processing failed:', error);
+                speak('Sorry, I had trouble understanding that. Could you try again?');
+            }
+        }
+
+        function playResponse(audioUrl) {
+            return new Promise((resolve) => {
+                const audio = new Audio(audioUrl);
+                
+                audio.onloadstart = () => {
+                    setEmotion('thinking');
+                    setStatus('processing');
+                };
+                
+                audio.onplay = () => {
+                    setEmotion('talking');
+                    setStatus('speaking');
+                    showStatus('Neo is responding...');
+                };
+                
+                audio.onended = () => {
+                    isProcessing = false;
+                    resetToListening();
+                    resolve();
+                };
+                
+                audio.onerror = () => {
+                    console.error('Audio playback failed');
+                    isProcessing = false;
+                    speak('I had trouble with my voice. Let me try again.');
+                    resolve();
+                };
+                
+                audio.play().catch(error => {
+                    console.error('Auto-play failed:', error);
+                    isProcessing = false;
+                    resetToListening();
+                    resolve();
+                });
+            });
+        }
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.1;
+                utterance.pitch = 1.2;
+                utterance.volume = 0.9;
+                
+                utterance.onstart = () => {
+                    setEmotion('talking');
+                    setStatus('speaking');
+                };
+                
+                utterance.onend = () => {
+                    isProcessing = false;
+                    resetToListening();
+                };
+                
+                speechSynthesis.speak(utterance);
+            } else {
+                isProcessing = false;
+                resetToListening();
+            }
+        }
+
+        function resetToListening() {
+            setTimeout(() => {
+                if (!isProcessing) {
+                    setEmotion('listening');
+                    setStatus('listening');
+                    showStatus('Ready for your next question...');
+                }
+            }, 1000);
+        }
+
+        // UI Functions
+        function setEmotion(emotion) {
+            const mouth = document.getElementById('neoMouth');
+            const eyes = document.getElementById('neoEyes');
+            
+            mouth.className = `mouth ${emotion}`;
+            eyes.className = `eyes ${emotion}`;
+        }
+
+        function setStatus(status) {
+            const statusDot = document.getElementById('statusDot');
+            statusDot.className = `status-dot ${status}`;
+        }
+
+        function showStatus(message) {
+            const indicator = document.getElementById('wakeIndicator');
+            indicator.textContent = message;
+            indicator.classList.add('show');
+            
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 3000);
+        }
+
+        // Keep audio context alive
+        document.addEventListener('click', () => {
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        });
+
+        // Heartbeat
+        setInterval(() => {
+            console.log('🤖 Neo is ready and listening...');
+        }, 30000);
+    </script>
+</body>
+</html>
