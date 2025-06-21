@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Neo AI Face</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .neo-face-container {
+            position: relative;
+            width: 480px;
+            height: 320px;
+            background: linear-gradient(145deg, #f0f8ff, #e6f3ff);
+            border-radius: 40px;
+            box-shadow: 
+                inset 0 20px 40px rgba(255, 255, 255, 0.5),
+                inset 0 -20px 40px rgba(0, 0, 0, 0.1),
+                0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 8px solid rgba(255, 255, 255, 0.8);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+
+        .face {
+            position: relative;
+            width: 400px;
+            height: 280px;
+        }
+
+        .eyes {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 100px;
+        }
+
+        .eye {
+            width: 60px;
+            height: 60px;
+            background: #333;
+            border-radius: 50%;
+            position: relative;
+            animation: blink 4s infinite;
+            box-shadow: 
+                inset 0 5px 10px rgba(0, 0, 0, 0.3),
+                0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .eye::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            animation: eyeShine 3s ease-in-out infinite;
+        }
+
+        .eye::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+        }
+
+        @keyframes blink {
+            0%, 45%, 55%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.1); }
+        }
+
+        @keyframes eyeShine {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .eyes.listening .eye {
+            animation: listenBlink 2s infinite;
+            background: #2ecc71;
+        }
+
+        .eyes.recording .eye {
+            animation: recordingBlink 1s infinite;
+            background: #f39c12;
+        }
+
+        .eyes.sleeping .eye {
+            animation: sleepBlink 3s infinite;
+            background: #95a5a6;
+        }
+
+        @keyframes listenBlink {
+            0%, 40%, 60%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.8); }
+        }
+
+        @keyframes recordingBlink {
+            0%, 100% { transform: scaleY(1); background: #f39c12; }
+            50% { transform: scaleY(0.9); background: #e67e22; }
+        }
+
+        @keyframes sleepBlink {
+            0%, 80%, 100% { transform: scaleY(0.2); }
+            90% { transform: scaleY(1); }
+        }
+
+        .mouth {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 60px;
+            border: 8px solid #ff6b6b;
+            border-top: none;
+            border-radius: 0 0 120px 120px;
+            background: #ffb3ba;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 -10px 20px rgba(255, 107, 107, 0.3),
+                0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .mouth.talking {
+            animation: talk 0.2s ease-in-out infinite alternate;
+            background: #ff8a95;
+            border-color: #ff4757;
+        }
+
+        .mouth.listening {
+            border-radius: 60px;
+            border-color: #2ecc71;
+            background: #a8e6cf;
+            width: 100px;
+            height: 50px;
+            animation: listenPulse 2s ease-in-out infinite;
+        }
+
+        .mouth.recording {
+            border-radius: 80px;
+            border-color: #f39c12;
+            background: #f9ca24;
+            width: 110px;
+            height: 55px;
+            animation: recordingPulse 1s ease-in-out infinite;
+        }
+
+        .mouth.sleeping {
+            border-radius: 40px;
+            border-color: #95a5a6;
+            background: #bdc3c7;
+            width: 80px;
+            height: 30px;
+        }
+
+        .mouth.happy {
+            border-radius: 0 0 120px 120px;
+            border-color: #4ecdc4;
+            background: #a8e6cf;
+            animation: smile 3s ease-in-out infinite;
+        }
+
+        @keyframes talk {
+            0% { 
+                height: 40px; 
+                border-radius: 0 0 80px 80px;
+                transform: translateX(-50%) scaleX(0.9);
+            }
+            100% { 
+                height: 80px; 
+                border-radius: 0 0 140px 140px;
+                transform: translateX(-50%) scaleX(1.1);
+            }
+        }
+
+        @keyframes listenPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+            50% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+        }
+
+        @keyframes recordingPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.15); }
+        }
+
+        @keyframes smile {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+        }
+
+        .status-dot {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2ecc71;
+            animation: statusPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
+        }
+
+        .status-dot.listening {
+            background: #2ecc71;
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
+        }
+
+        .status-dot.recording {
+            background: #f39c12;
+            box-shadow: 0 0 20px rgba(243, 156, 18, 0.5);
+        }
+
+        .status-dot.speaking {
+            background: #e74c3c;
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
+        }
+
+        .status-dot.processing {
+            background: #9b59b6;
+            box-shadow: 0 0 20px rgba(155, 89, 182, 0.5);
+        }
+
+        .status-dot.sleeping {
+            background: #95a5a6;
+            box-shadow: 0 0 10px rgba(149, 165, 166, 0.3);
+            animation: sleepPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        @keyframes sleepPulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1); opacity: 0.7; }
+        }
+
+        .wake-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .wake-indicator.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="neo-face-container">
+        <div class="status-dot" id="statusDot"></div>
+        <div class="face">
+            <div class="eyes" id="neoEyes">
+                <div class="eye"></div>
+                <div class="eye"></div>
+            </div>
+            <div class="mouth happy" id="neoMouth"></div>
+        </div>
+        <div class="wake-indicator" id="wakeIndicator">Getting ready...</div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://6423-197-25-169-35.ngrok-free.app';
+        
+        // State management
+        let currentState = 'sleeping'; // sleeping, listening, recording, processing, speaking
+        let globalStream = null;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let silenceTimer = null;
+        let idleTimer = null;
+        
+        // Speech recognition for wake words
+        let recognition = null;
+        
+        // Wake words
+        const WAKE_WORDS = ['hi', 'hello', 'hey'];
+        const STOP_WORDS = ['stop', 'quit', 'goodbye', 'bye'];
+        const SILENCE_TIMEOUT = 5000; // 5 seconds before going to sleep
+        const IDLE_TIMEOUT = 5000; // 5 seconds after response before sleeping
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                showStatus('Getting microphone access...');
+                
+                // Get microphone permission
+                globalStream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true,
+                        sampleRate: 44100
+                    }
+                });
+
+                // Initialize speech recognition
+                initSpeechRecognition();
+                
+                // Start in sleep mode (waiting for wake words)
+                enterSleepMode();
+                
+                console.log('🤖 Neo is ready! Say "hi", "hello", or "hey" to wake me up');
+                
+            } catch (error) {
+                console.error('Setup failed:', error);
+                showStatus('Please allow microphone access and refresh');
+            }
+        });
+
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                
+                recognition.continuous = true;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+                
+                recognition.onresult = handleSpeechResult;
+                recognition.onerror = handleSpeechError;
+                recognition.onend = handleSpeechEnd;
+            } else {
+                console.warn('Speech recognition not supported, using manual recording');
+            }
+        }
+
+        function handleSpeechResult(event) {
+            const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase().trim();
+            console.log('🎤 Heard:', transcript);
+
+            if (currentState === 'sleeping') {
+                // Check for wake words
+                if (WAKE_WORDS.some(word => transcript.includes(word))) {
+                    console.log('🔥 Wake word detected!');
+                    wakeUp();
+                }
+            } else if (currentState === 'listening') {
+                // Check for stop words
+                if (STOP_WORDS.some(word => transcript.includes(word))) {
+                    console.log('💤 Stop word detected, going to sleep');
+                    enterSleepMode();
+                } else {
+                    // Process the speech as a question/command
+                    processSpokenText(transcript);
+                }
+            }
+        }
+
+        function handleSpeechError(event) {
+            console.error('Speech recognition error:', event.error);
+            if (currentState === 'listening') {
+                // Restart recognition if we're supposed to be listening
+                setTimeout(() => {
+                    if (currentState === 'listening') {
+                        startListening();
+                    }
+                }, 1000);
+            }
+        }
+
+        function handleSpeechEnd() {
+            // Restart recognition if we're still in a listening state
+            if (currentState === 'sleeping' || currentState === 'listening') {
+                setTimeout(() => {
+                    if (currentState === 'sleeping' || currentState === 'listening') {
+                        recognition.start();
+                    }
+                }, 100);
+            }
+        }
+
+        // State management functions
+        function enterSleepMode() {
+            currentState = 'sleeping';
+            setEmotion('sleeping');
+            setStatus('sleeping');
+            showStatus('Say "hi", "hello", or "hey" to wake me up');
+            
+            clearAllTimers();
+            
+            // Start listening for wake words
+            if (recognition) {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.log('Recognition already running');
+                }
+            }
+        }
+
+        function wakeUp() {
+            currentState = 'listening';
+            setEmotion('listening');
+            setStatus('listening');
+            showStatus('I\'m listening! What can I help you with?');
+            
+            // Speak the wake response
+            speak('I am listening');
+            
+            // Set idle timer to go back to sleep after 5 seconds of no activity
+            setIdleTimer();
+        }
+
+        function startListening() {
+            if (currentState !== 'listening') return;
+            
+            // Continue listening with speech recognition
+            if (recognition) {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.log('Recognition already running');
+                }
+            }
+        }
+
+        async function processSpokenText(text) {
+            if (currentState !== 'listening') return;
+            
+            currentState = 'processing';
+            setEmotion('thinking');
+            setStatus('processing');
+            showStatus('Processing your request...');
+            
+            clearAllTimers();
+            
+            try {
+                // Send text to your API
+                const response = await fetch(`${API_BASE}/chat/text`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true'
+                    },
+                    body: JSON.stringify({
+                        message: text,
+                        child_name: 'friend'
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    speak(data.response || 'I heard you, but I\'m not sure how to respond to that.');
+                } else {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('Processing failed:', error);
+                speak('Sorry, I had trouble processing that. Could you try again?');
+            }
+        }
+
+        function speak(text) {
+            currentState = 'speaking';
+            setEmotion('talking');
+            setStatus('speaking');
+            showStatus('Neo is responding...');
+            
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 1.1;
+                utterance.pitch = 1.2;
+                utterance.volume = 0.9;
+                
+                utterance.onend = () => {
+                    // After speaking, go back to listening
+                    currentState = 'listening';
+                    setEmotion('listening');
+                    setStatus('listening');
+                    showStatus('Ready for your next question...');
+                    
+                    // Set idle timer
+                    setIdleTimer();
+                    
+                    // Resume listening
+                    startListening();
+                };
+                
+                speechSynthesis.speak(utterance);
+            } else {
+                // Fallback if speech synthesis not available
+                setTimeout(() => {
+                    currentState = 'listening';
+                    setEmotion('listening');
+                    setStatus('listening');
+                    showStatus('Ready for your next question...');
+                    setIdleTimer();
+                    startListening();
+                }, 2000);
+            }
+        }
+
+        // Timer management
+        function setIdleTimer() {
+            clearAllTimers();
+            idleTimer = setTimeout(() => {
+                if (currentState === 'listening') {
+                    console.log('💤 Idle timeout - going to sleep');
+                    enterSleepMode();
+                }
+            }, IDLE_TIMEOUT);
+        }
+
+        function clearAllTimers() {
+            if (silenceTimer) {
+                clearTimeout(silenceTimer);
+                silenceTimer = null;
+            }
+            if (idleTimer) {
+                clearTimeout(idleTimer);
+                idleTimer = null;
+            }
+        }
+
+        // UI Functions
+        function setEmotion(emotion) {
+            const mouth = document.getElementById('neoMouth');
+            const eyes = document.getElementById('neoEyes');
+            
+            mouth.className = `mouth ${emotion}`;
+            eyes.className = `eyes ${emotion}`;
+        }
+
+        function setStatus(status) {
+            const statusDot = document.getElementById('statusDot');
+            statusDot.className = `status-dot ${status}`;
+        }
+
+        function showStatus(message) {
+            const indicator = document.getElementById('wakeIndicator');
+            indicator.textContent = message;
+            indicator.classList.add('show');
+            
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 3000);
+        }
+
+        // Click to wake up (backup method)
+        document.addEventListener('click', () => {
+            if (currentState === 'sleeping') {
+                wakeUp();
+            }
+        });
+
+        // Heartbeat
+        setInterval(() => {
+            console.log(`🤖 Neo status: ${currentState}`);
+        }, 10000);
+    </script>
+</body>
+</html>
